@@ -1,0 +1,22 @@
+body {
+    background-color: #0b0c10;
+    color: #c5c6c7;
+}
+.card {
+    background-color: #1f2833;
+    color: #c5c6c7;
+}
+.form-label {
+    color: #c5c6c7;
+}
+.btn-primary {
+    background-color: #45a29e;
+    border-color: #45a29e;
+}
+.btn-primary:hover {
+    background-color: #66fcf1;
+    border-color: #66fcf1;
+}
+.alert {
+    font-weight: bold;
+}
