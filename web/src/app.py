@@ -15,15 +15,28 @@ def index():
     if request.method == "POST":
         try:
             # --- Ler dados do formulário ---
-            # Supondo que cada coluna original seja um campo do form
-            # 1️⃣ Pega o JSON enviado no body
             json_data = request.get_json()
-
-            # 2️⃣ Converte a lista de exemplos em DataFrame
             X_new = pd.DataFrame([json_data])
 
-            # 3️⃣ Passa o DataFrame inteiro para o pipeline
-            prediction = pipeline.predict(X_new)
+            # --- Listar colunas que o pipeline espera mas que não estão no JSON ---
+            expected_columns = (
+                pipeline.named_steps["preprocessor"].transformers_[0][2]
+                + pipeline.named_steps["preprocessor"].transformers_[1][2]
+            )  # categóricas + numéricas
+            missing_cols = [
+                col for col in expected_columns if col not in X_new.columns
+            ]
+
+            # --- Preencher essas colunas com NaN (ou valor neutro) ---
+            for col in missing_cols:
+                X_new[col] = 0.0
+
+            # --- Garantir a mesma ordem de colunas ---
+            X_new = X_new[expected_columns]
+
+            # --- Fazer a predição ---
+            prediction = pipeline.predict(X_new)[0]
+
         except Exception as e:
             prediction = f"Error: {str(e)}"
 
