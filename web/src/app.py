@@ -16,16 +16,14 @@ def index():
         try:
             # --- Ler dados do formulário ---
             # Supondo que cada coluna original seja um campo do form
-            input_data = {
-                col: [request.form[col]]
-                for col in pipeline.named_steps["preprocessor"].transformers_[
-                    1
-                ][2]
-            }
-            df = pd.DataFrame(input_data)
+            # 1️⃣ Pega o JSON enviado no body
+            json_data = request.get_json()
 
-            # --- Fazer predição ---
-            prediction = pipeline.predict(df)[0]
+            # 2️⃣ Converte a lista de exemplos em DataFrame
+            X_new = pd.DataFrame([json_data])
+
+            # 3️⃣ Passa o DataFrame inteiro para o pipeline
+            prediction = pipeline.predict(X_new)
         except Exception as e:
             prediction = f"Error: {str(e)}"
 
