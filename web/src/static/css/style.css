@@ -1,21 +1,31 @@
 body {
-    background-color: #0b0c10;
+    background-color: #ffffff;
     color: #c5c6c7;
 }
+
+.site-title {
+    color: #5e5e5f;
+}
+
 .card {
-    background-color: #1f2833;
-    color: #c5c6c7;
+    background-color: #07173f;
+    color: #ffffff;
 }
 .form-label {
-    color: #c5c6c7;
+    color: #ffffff; /* texto acima do input fica branco */
 }
+
+.form-control::placeholder {
+    color: #5e5e5f; /* placeholder dentro do input continua cinza */
+}
+
 .btn-primary {
-    background-color: #45a29e;
-    border-color: #45a29e;
+    background-color: #0960e1;
+    border-color: #0960e1;
 }
 .btn-primary:hover {
-    background-color: #66fcf1;
-    border-color: #66fcf1;
+    background-color: #2e96f5;
+    border-color: #2e96f5;
 }
 .alert {
     font-weight: bold;
