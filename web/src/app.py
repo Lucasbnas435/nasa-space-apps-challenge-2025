@@ -15,6 +15,7 @@ def home():
     prediction = None
     if request.method == "POST":
         form_data = request.form.to_dict()
+        print(f"Form data: {form_data}")
         prediction = model.predict(form_data)
 
     return render_template(
