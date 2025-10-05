@@ -1,11 +1,16 @@
+import os
+
 from flask import Flask, render_template, request
 from src.config.features import categorical_features, feature_info
 from src.models.ml_pipeline_handler import MlPipelineHandler
 
 app = Flask(__name__)
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+model_path = os.path.join(BASE_DIR, "models", "lightgbm_pipeline.pkl")
+
 model = MlPipelineHandler(
-    model_path="./models/lightgbm_pipeline.pkl",
+    model_path=model_path,
     categorical_features=categorical_features,
 )
 
