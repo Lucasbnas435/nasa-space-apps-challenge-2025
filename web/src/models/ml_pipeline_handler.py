@@ -29,4 +29,7 @@ class MlPipelineHandler:
 
     def predict(self, data: dict):
         df = self.preprocess(data)
-        return self.pipeline.predict(df)[0]
+        result = self.pipeline.predict(df)[0]
+        if result == 1:
+            return "Exoplanet candidate detected! 🚀"
+        return "No exoplanet detected this time. Keep hunting!"

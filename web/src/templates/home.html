@@ -36,8 +36,8 @@
                 </form>
                 
                 {% if prediction is not none %}
-                <div class="alert mt-4 {% if prediction == 'Candidate' %}alert-success{% else %}alert-danger{% endif %} text-center">
-                    Prediction: {{ prediction }}
+                <div class="alert mt-4 {% if prediction == 'Exoplanet candidate detected! 🚀' %}alert-success{% else %}alert-danger{% endif %} text-center">
+                    {{ prediction }}
                 </div>
                 {% endif %}
             </div>
