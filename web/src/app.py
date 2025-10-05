@@ -5,8 +5,8 @@ from flask import Flask, render_template, request
 app = Flask(__name__)
 
 # Carrega pipeline
-with open("./models/lightgbm_pipeline.pkl", "rb") as f:
-    pipeline = cloudpickle.load(f)
+with open("./models/lightgbm_pipeline.pkl", "rb") as pipeline_file:
+    pipeline = cloudpickle.load(pipeline_file)
 
 feature_info = {
     "koi_tce_delivname": {
@@ -83,18 +83,14 @@ feature_info = {
     },
 }
 
-# lista fixa de colunas categóricas
 categorical_features = [
     "koi_tce_delivname",
-    "koi_tce_delivname_q1_q16_tce",
-    "koi_tce_delivname_q1_q17_dr24_tce",
-    # adicione aqui outras categóricas se houver
 ]
 expected_columns = (
     pipeline.named_steps["preprocessor"].transformers_[0][2]
     + pipeline.named_steps["preprocessor"].transformers_[1][2]
-)  # categóricas + numéricas
-# valores padrão
+)  # categorical + numerical features
+
 default_values = {
     col: ("unknown" if col in categorical_features else 0.0)
     for col in expected_columns
@@ -111,12 +107,10 @@ def home():
 
         X_new = X_new.reindex(columns=expected_columns)
 
-        # converte colunas numéricas para float
         for col in expected_columns:
             if col not in categorical_features:
                 X_new[col] = pd.to_numeric(X_new[col], errors="coerce")
 
-        # preenche NaNs com valores padrão
         X_new = X_new.fillna(value=default_values)
 
         prediction = pipeline.predict(X_new)[0]
