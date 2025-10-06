@@ -2,7 +2,13 @@
 
 This repository contains a machine learning project developed for the **NASA Space Apps Challenge 2025**. The goal is to build a classification model that can accurately predict whether an object of interest observed by the Kepler Space Telescope is a potential exoplanet candidate.
 
-Using the cumulative Kepler Object of Interest (KOI) dataset, this project involves data exploration, preprocessing, feature selection, and the training and evaluation of multiple classification models to identify the most effective one for this task.
+Using the cumulative Kepler Object of Interest (KOI) dataset, this project involves data exploration, preprocessing, feature selection, and the training and evaluation of multiple classification models to identify the most effective one for this task. The best-performing model has been deployed as a public web application using Flask and Google Cloud Run.
+
+**Access the Live Web Application:**
+
+[**Exoplanet Hunter**](https://exoplanet-hunter-63487098151.us-central1.run.app/)
+
+*Please note: The live application will be available throughout the NASA Space Apps Challenge 2025 event and the subsequent judging period.*
 
 ## Table of Contents
 
@@ -19,14 +25,19 @@ Using the cumulative Kepler Object of Interest (KOI) dataset, this project invol
     2.  [Installation](#installation)
     3.  [Running the Notebook](#running-the-notebook)
 5.  [Model Evaluation Summary](#model-evaluation-summary)
-6.  [Conclusion](#conclusion)
-7.  [Future Improvements](#future-improvements)
+6.  [Web Application & Deployment](#web-application--deployment)
+    1.  [How It Works](#how-it-works)
+    2.  [Deployment](#deployment)
+7.  [Conclusion](#conclusion)
+8.  [Future Improvements](#future-improvements)
 
 ## Project Overview
 
-The search for exoplanets is one of the most exciting frontiers in modern astronomy. The Kepler mission has provided a vast catalog of potential candidates, but distinguishing genuine exoplanets from astrophysical false positives is a significant challenge. This project leverages machine learning to automate and improve the accuracy of this classification process.
+The search for exoplanets is one of the most exciting frontiers in modern astronomy. The Kepler mission has provided a vast catalog of potential candidates, but distinguishing genuine exoplanets from astrophysical false positives is a significant challenge.
 
-The core objective is to build a binary classification model that takes in stellar and transit-related features from the Kepler dataset and predicts whether a Kepler Object of Interest (KOI) is a `CANDIDATE` or a `FALSE POSITIVE`.
+Aligning with the goals of the NASA Space Apps Challenge, this project addresses this problem by developing a solution that combines an artificial intelligence/machine learning model with an interactive web interface. The core of this project is a binary classification model trained on NASA's Kepler Object of Interest (KOI) dataset. It analyzes key data variables—such as orbital period, transit duration, and planetary radius—to classify an observation as either an exoplanet `CANDIDATE` or a `FALSE POSITIVE`.
+
+A significant focus was placed on the data preprocessing and feature selection pipeline, acknowledging that how data is handled is critical for building a high-accuracy model. To make this tool accessible to scientists and enthusiasts, the final model is served through a web application that allows users to manually enter data and receive a real-time classification.
 
 ## Dataset
 
@@ -162,9 +173,34 @@ All models were evaluated on the test set. The LightGBM model demonstrated the b
 | Random Forest | 0.8443 | 0.83 | **0.87** | 0.85 | 0.86 | 0.82 | 0.84 |
 | Decision Tree | 0.8014 | 0.80 | 0.80 | 0.80 | 0.80 | 0.80 | 0.80 |
 
+
+## Web Application & Deployment
+
+To make the predictive power of the trained LightGBM model accessible to a wider audience, a web application was developed using the **Flask** framework.
+
+### How It Works
+
+The application provides a web interface where users can input the celestial object's data. The backend architecture is designed for robustness and efficiency:
+
+1.  **User Input:** The user fills out a form in the `home.html` template.
+2.  **Flask Backend:** The main application file, `app.py`, receives the form data via a POST request.
+3.  **ML Pipeline Handler:** A custom `MlPipelineHandler` class manages the entire prediction process. This handler is responsible for:
+      * Loading the serialized `lightgbm_pipeline.pkl` at startup.
+      * Preprocessing the incoming form data into a pandas DataFrame that matches the exact format expected by the model. This includes reordering columns, handling missing values, and ensuring correct data types.
+      * Passing the cleaned data to the loaded pipeline to get a prediction.
+      * Returning a user-friendly message to the frontend: `Exoplanet candidate detected! 🚀` for a positive prediction or `No exoplanet detected this time. Keep hunting!` for a negative one.
+
+### Deployment
+
+The application is containerized using **Docker** and has been successfully deployed to **Google Cloud Run**, making it a scalable and publicly accessible tool.
+
+You can access the live application here: **[Exoplanet Hunter](https://exoplanet-hunter-63487098151.us-central1.run.app/)**
+
+Please note: The live application will be available throughout the NASA Space Apps Challenge 2025 event and the subsequent judging period.
+
 ## Conclusion
 
-This project successfully demonstrates the use of machine learning to classify Kepler Objects of Interest. After a thorough process of data cleaning, feature selection, and comparative model evaluation, the **LightGBM classifier** was selected as the final model due to its superior performance in accuracy and F1-score. The final, deployable pipeline, which includes all preprocessing steps, was exported for potential use in a production environment or further analysis.
+This project successfully demonstrates the use of machine learning to classify Kepler Objects of Interest. After a thorough process of data cleaning, feature selection, and comparative model evaluation, the **LightGBM classifier** was selected as the final model due to its superior performance in accuracy and F1-score. The final, deployable pipeline, which includes all preprocessing steps, was exported and successfully integrated into a Flask web application, making the model's predictions easily accessible.
 
 ## Future Improvements
 
