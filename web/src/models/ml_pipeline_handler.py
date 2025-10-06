@@ -1,10 +1,15 @@
+import os
+
 import cloudpickle
 import pandas as pd
 
 
 class MlPipelineHandler:
-    def __init__(self, model_path: str, categorical_features: list[str]):
-        with open(model_path, "rb") as pipeline_file:
+    def __init__(self, model_file_name: str, categorical_features: list[str]):
+        BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+        self.__model_path = os.path.join(BASE_DIR, model_file_name)
+
+        with open(self.__model_path, "rb") as pipeline_file:
             self.pipeline = cloudpickle.load(pipeline_file)
 
         self.categorical_features = categorical_features
