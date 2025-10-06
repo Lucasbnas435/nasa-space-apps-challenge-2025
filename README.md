@@ -67,14 +67,13 @@ This stage prepares the data for model training:
 
 ### 3\. Correlation Analysis and Feature Selection
 
-To further refine the feature set and reduce model complexity, a correlation analysis was performed:
+To refine the feature set, reduce model complexity, and improve performance, a two-step feature selection process was conducted:
 
-  * A heatmap was generated to visualize the correlation between features.
-  * The correlation of each feature with the target variable was calculated.
-  * Features with low correlation to the target or high multicollinearity were dropped. The following 20 columns were removed in this step:
-    ```
-    "koi_impact", "koi_duration", "koi_srad_err1", "koi_time0bk_err1", "koi_tce_plnt_num", "koi_time0bk", "koi_depth_err1", "koi_slogg_err2", "koi_impact_err1", "ra", "dec", "koi_depth_err2", "koi_kepmag", "koi_srad_err2", "koi_srad", "koi_slogg", "koi_impact_err2", "koi_steff", "koi_slogg_err1", "koi_tce_delivname_q1_q17_dr25_tce"
-    ```
+* **Correlation Analysis:** A correlation matrix was generated and visualized as a heatmap. This helped to identify features with high multicollinearity and to understand the linear relationships between the features and the target variable.
+
+* **Model-Based Feature Importance:** To capture more complex, non-linear relationships, a preliminary **RandomForestClassifier** was trained on the preprocessed training data. The model's `feature_importances_` attribute was then used to rank features based on their predictive power.
+
+Combining the insights from both analyses, 20 features deemed to have low predictive importance were removed, resulting in a more focused and effective dataset for the final model training.
 
 ### 4\. Model Training and Evaluation
 
@@ -125,7 +124,20 @@ cloudpickle
     ```bash
     cd machine_learning
     ```
-3.  Install the required packages:
+3.  Create a Python virtual environment. This will isolate the project's dependencies:
+    ```bash
+    python -m venv venv
+    ```
+4.  Activate the virtual environment:
+      * **On Windows:**
+        ```bash
+        .\venv\Scripts\activate
+        ```
+      * **On macOS/Linux:**
+        ```bash
+        source venv/bin/activate
+        ```
+5.  Install the required packages using the `requirements.txt` file:
     ```bash
     pip install -r requirements.txt
     ```
