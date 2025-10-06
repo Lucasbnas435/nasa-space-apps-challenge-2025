@@ -12,11 +12,11 @@ body {
     color: #ffffff;
 }
 .form-label {
-    color: #ffffff; /* texto acima do input fica branco */
+    color: #ffffff;
 }
 
 .form-control::placeholder {
-    color: #5e5e5f; /* placeholder dentro do input continua cinza */
+    color: #5e5e5f;
 }
 
 .btn-primary {
