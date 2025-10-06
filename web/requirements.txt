@@ -3,3 +3,5 @@ joblib
 flask
 scikit-learn
 lightgbm
+gunicorn
+cloudpickle
